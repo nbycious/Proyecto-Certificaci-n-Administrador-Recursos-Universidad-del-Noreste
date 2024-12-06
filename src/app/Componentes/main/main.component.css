@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+
+.conenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+
+.menu {
+   
+    background-image: url('https://www.une.edu.mx/wp-content/uploads/2023/11/vida-une-2.jpg');
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 400px; 
+    padding: 40px 0;
+    position: relative;
+    color: white;
+}
+
+.menu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.644); 
+    z-index: 1;
+}
+
+.botonesMenu {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    position: relative;
+    z-index: 2; 
+}
+
+.boton {
+    background: linear-gradient(55deg, #B60A44 78.3%, #180072 104.01%);
+    color: white;
+    font-size: 1.5rem;
+    width: 275px; 
+    height: 275px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, margin 0.3s ease; /* Agregar transición para el margen */
+    
+    /* Margen blanco alrededor del contenedor */
+    margin: 20px; /* Puedes ajustar este valor */
+    border: 1px solid white
+}
+.boton a {
+    text-decoration: none; /* Quita el subrayado por defecto */
+    color: white; /* Color inicial del texto - ajusta según necesites */
+}
+
+.boton a:hover {
+    text-decoration: none; /* Asegura que no haya subrayado en hover */
+    color: white; /* Cambia este color al que prefieras para el hover */
+}
+.boton:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    margin: 20px; /* Mantener el margen en el estado hover */
+    border: 1px solid white
+}
+
+.texto {
+    background-color: #02021D;
+    color: white;
+    padding: 40px 20px; 
+    text-align: center;
+    margin-bottom: 30px;
+    width: 100%;
+    font-size: 150%;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrado vertical */
+    align-items: center; /* Centrado horizontal */
+}
+
+.seccionPasos {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra horizontalmente todo el contenido */
+    gap: 20px; /* Espaciado entre las filas */
+}
+
+.fila {
+    display: flex;
+    gap: 20px; /* Espaciado entre las cajas */
+    justify-content: center; /* Centra las cajas horizontalmente */
+    
+}
+
+.caja {
+    
+    width: 400px; /* Establece un ancho máximo */
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(303deg, #B60A44 21.37%, #180074 175.99%);
+    color: white;
+    text-align: center;
+}
+
+.caja3 {
+    margin-top: 20px; /* Espaciado adicional con respecto a las dos primeras cajas */
+    width: 300px; /* Más ancha para destacar la caja inferior */
+}
+
+
+
+.textopaso1, .textopaso2, .textopaso3 {
+    color: #070707;
+}
+
+.footer {
+    width: 100%; 
+    height: 54px;
+    background: #B60A44;
+    margin-top: 30px; 
+    flex-shrink: 0;
+    
+}

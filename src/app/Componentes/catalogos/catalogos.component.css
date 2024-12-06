@@ -1,0 +1,76 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500&display=swap');
+.welcome{
+  padding: 15px;
+  font-family: 'Roboto Slab';
+}
+.fondo{
+    background-color: white;
+    width: 100%;
+    height: 987px;
+}
+.container{
+
+  width: 1251px;
+  height: 889px;
+
+
+  border-radius: 28px;
+  background-color: white;
+}
+.custom-filter-container {
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.custom-filter-container .btn-success {
+  width: 100%;
+  font-weight: bold;
+}
+
+.subirExcel {
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+
+.inputExcel {
+  display: none; /* Oculta el input de archivo */
+}
+
+.agregar{
+  margin-bottom: 10px;
+  margin-left: 5px;
+}
+.modal-content {
+  max-height: 90vh; /* Limitar el tamaño del modal al 90% de la altura de la pantalla */
+  overflow-y: auto; /* Habilitar el scroll si el contenido sobrepasa el tamaño */
+}
+
+  
+  
+  .modal-title{
+    font-size: 30px;
+    font-weight: bold;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 800px;
+    align-self: center;
+  }
+  
+  button {
+    margin: 10px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  

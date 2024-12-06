@@ -1,0 +1,20 @@
+<nav class="navigation-rail">
+    <div class="navbar-container">
+      <!-- Logo -->
+      <div class="navbar-logo">
+        <img class="logo-img" src="src\assets\image 3.png">
+      </div>
+      <p class="adminrec">Administrador de Recursos - Laboratorios de Ingeniería</p>
+      <!-- Enlaces -->
+      <div class="navbar-links">
+        <!-- Enlace visible solo para alumnos -->
+        <p *ngIf="usuario?.Rol === 'Alumno'" class="inicio" (click)="navegarInicio()" style="margin: auto;">Inicio</p>
+        <p class="logout" (click)="logout()">Cerrar sesión</p>
+        
+      
+       
+        
+        
+      </div>
+    </div>
+  </nav>
