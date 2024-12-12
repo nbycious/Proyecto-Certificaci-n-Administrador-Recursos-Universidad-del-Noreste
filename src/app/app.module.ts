@@ -42,7 +42,7 @@ import { SolicitudesComponent } from './Componentes/solicitudes/solicitudes.comp
   providers: [
    CatalogosService
   ],
-   bootstrap: [AppComponent] // This line is crucial!
+   bootstrap: [AppComponent] 
   
 })
 export class AppModule { }

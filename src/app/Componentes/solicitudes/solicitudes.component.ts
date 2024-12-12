@@ -142,11 +142,11 @@ export class SolicitudesComponent implements OnInit {
               title: "Ir a catálogo",
               text: "Serás redirigido al catálogo para agregar tus recursos",
               icon: "question",
-              showCancelButton: true,
+              //showCancelButton: true,
               confirmButtonColor: "#3085d6",
               cancelButtonColor: "#d33",
               confirmButtonText: "Aceptar",
-              cancelButtonText: "Cancelar"
+              //cancelButtonText: "Cancelar"
             }).then((result) => {
               if (result.isConfirmed) {
                 let btncerrar = document.getElementById("btnCerrarModalSolicitud");
@@ -183,62 +183,59 @@ export class SolicitudesComponent implements OnInit {
         const solicitudRef = doc(this.firestore, 'Solicitudes', solicitudId);
         const solicitudDoc = await getDoc(solicitudRef);
     
-        if (solicitudDoc.exists()) {
-          const solicitudData = solicitudDoc.data();
-          const recursosSeleccionados = solicitudData?.recursos;
-    
-          // Si la solicitud está siendo aprobada, actualizamos las cantidades de los recursos
-          if (nuevoEstado === 'Aprobada' && recursosSeleccionados) {
-            for (let recurso of recursosSeleccionados) {
-              // Obtener el recurso completo del catálogo utilizando el recursoId
-              const recursoDoc = await getDoc(doc(this.firestore, 'Recursos', recurso.recursoId));
-    
-              if (recursoDoc.exists()) {
-                const recursoData = recursoDoc.data();
-                const cantidadSeleccionada = recurso.cantidadSeleccionada;
-                const nuevaCantidadDisp = recursoData?.cantidadDisp - cantidadSeleccionada;
-    
-                // Usar el servicio CatalogosService para actualizar la cantidad disponible
-                await this.catalogoServ.actualizarCantidadDisponible(recurso.recursoId, nuevaCantidadDisp);
-              }
-            }
-          }
-    
-          // Si el estado cambia a "Finalizada", restablecer las cantidades
-          if (nuevoEstado === 'Finalizada' && recursosSeleccionados) {
-            for (let recurso of recursosSeleccionados) {
-              // Obtener el recurso completo del catálogo utilizando el recursoId
-              const recursoDoc = await getDoc(doc(this.firestore, 'Recursos', recurso.recursoId));
-    
-              if (recursoDoc.exists()) {
-                const recursoData = recursoDoc.data();
-                const cantidadSeleccionada = recurso.cantidadSeleccionada;
-                const cantidadOriginal = recursoData?.cantidadDisp + cantidadSeleccionada;
-    
-                // Usar el servicio CatalogosService para restaurar la cantidad disponible
-                await this.catalogoServ.actualizarCantidadDisponible(recurso.recursoId, cantidadOriginal);
-              }
-            }
-          }
-    
-          // Actualizar el estado de la solicitud
-          await updateDoc(solicitudRef, { estado: nuevoEstado });
-    
-          Swal.fire({
-            title: 'Éxito',
-            text: `La solicitud ha sido actualizada a ${nuevoEstado}.`,
-            icon: 'success',
-            confirmButtonText: 'Ok',
-          });
+        if (!solicitudDoc.exists()) {
+          console.error(`La solicitud con ID ${solicitudId} no existe.`);
+          return;
         }
+    
+        const solicitudData = solicitudDoc.data();
+        const recursosSeleccionados = solicitudData?.recursos;
+    
+        // Si la solicitud está siendo aprobada, actualizamos las cantidades de los recursos
+        if (nuevoEstado === 'Aprobada' && recursosSeleccionados?.length) {
+          for (let recurso of recursosSeleccionados) {
+            const recursoRef = doc(this.firestore, 'Recursos', recurso.recursoId);
+            const recursoDoc = await getDoc(recursoRef);
+    
+            if (recursoDoc.exists()) {
+              const recursoData = recursoDoc.data();
+              const cantidadSeleccionada = recurso.cantidadSeleccionada;
+              const nuevaCantidadDisp = recursoData?.cantidadDisp - cantidadSeleccionada;
+    
+              await this.catalogoServ.actualizarCantidadDisponible(recurso.recursoId, nuevaCantidadDisp);
+    
+              if (nuevaCantidadDisp <= 0) {
+                await this.catalogoServ.actualizarEstatusRecurso(recurso.recursoId, 'inactivo');
+              }
+            }
+          }
+        }
+    
+        // Si el estado cambia a "Finalizada", restablecer las cantidades
+        if (nuevoEstado === 'Finalizada' && recursosSeleccionados?.length) {
+          for (let recurso of recursosSeleccionados) {
+            const recursoRef = doc(this.firestore, 'Recursos', recurso.recursoId);
+            const recursoDoc = await getDoc(recursoRef);
+    
+            if (recursoDoc.exists()) {
+              const recursoData = recursoDoc.data();
+              const cantidadSeleccionada = recurso.cantidadSeleccionada;
+              const cantidadOriginal = recursoData?.cantidadDisp + cantidadSeleccionada;
+    
+              await this.catalogoServ.actualizarCantidadDisponible(recurso.recursoId, cantidadOriginal);
+    
+              if (cantidadOriginal <= 0) {
+                await this.catalogoServ.actualizarEstatusRecurso(recurso.recursoId, 'inactivo');
+              }
+            }
+          }
+        }
+    
+        // Actualizar el estado de la solicitud
+        await updateDoc(solicitudRef, { estado: nuevoEstado });
+    
       } catch (error) {
-        console.error('Error al actualizar el estado de la solicitud:', error);
-        Swal.fire({
-          title: 'Error',
-          text: 'Hubo un problema al actualizar el estado de la solicitud',
-          icon: 'error',
-          confirmButtonText: 'Ok',
-        });
+        console.error("Error al actualizar el estado:", error);
       }
     }
     
@@ -280,7 +277,7 @@ export class SolicitudesComponent implements OnInit {
       this.solisFiltradas = this.solicitudes.filter(solicitud => solicitud.estado === this.estatusSeleccionado);
     }
   
-    // Si no hay solicitudes que coincidan con el filtro, mostrar una alerta (excepto cuando se elige "Todas")
+    /* Si no hay solicitudes que coincidan con el filtro, mostrar una alerta (excepto cuando se elige "Todas")
     if (this.solisFiltradas.length === 0 && this.estatusSeleccionado !== '') {
       await Swal.fire({
         title: 'No hay solicitudes',
@@ -288,7 +285,7 @@ export class SolicitudesComponent implements OnInit {
         icon: 'info',
         confirmButtonText: 'Aceptar'
       });
-    }
+    }*/
   }
   
   

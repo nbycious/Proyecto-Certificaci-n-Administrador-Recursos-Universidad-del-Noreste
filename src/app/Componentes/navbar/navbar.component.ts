@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -20,12 +20,23 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
   }
-    // Método para cerrar sesión
-    logout() {
-      localStorage.removeItem('usuario');
-      this.usuario = null;
-      this.router.navigate(['']);
-    }
+  logout() {
+    // Elimina el usuario del localStorage
+    localStorage.removeItem('usuario');
+    this.usuario = null;
+  
+    // Navega a la página de inicio
+    this.router.navigate(['']);
+  
+    // Muestra la alerta de SweetAlert2
+    Swal.fire({
+      icon: 'success',
+      title: 'Sesión cerrada con éxito',
+      text: 'Te esperamos pronto de vuelta',
+      confirmButtonText: 'Aceptar',
+    });
+  }
+  
     navegarInicio(){
       this.router.navigate(['/Main'])
     }

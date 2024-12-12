@@ -19,6 +19,8 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.3",
     "firebase": "^9.10.0",
     "read-excel-file": "^5.8.6",
     "rxfire": "^6.0.0",

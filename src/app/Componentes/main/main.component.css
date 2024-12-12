@@ -103,33 +103,31 @@ body {
 
 .seccionPasos {
     display: flex;
-    flex-direction: column;
-    align-items: center; /* Centra horizontalmente todo el contenido */
-    gap: 20px; /* Espaciado entre las filas */
-}
-
-.fila {
-    display: flex;
-    gap: 20px; /* Espaciado entre las cajas */
     justify-content: center; /* Centra las cajas horizontalmente */
-    
+    align-items: flex-start; /* Alinea las cajas en la parte superior (opcional) */
+    gap: 20px; /* Espaciado uniforme entre cajas */
+    margin: 20px; /* Margen general desde los bordes de la página */
+    flex-wrap: wrap; /* Permite que las cajas bajen a una nueva fila en pantallas pequeñas */
 }
 
 .caja {
-    
-    width: 400px; /* Establece un ancho máximo */
-    padding: 15px;
+    width: 300px; /* Ancho fijo para cada caja */
+    padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
     background: linear-gradient(303deg, #B60A44 21.37%, #180074 175.99%);
     color: white;
     text-align: center;
 }
 
-.caja3 {
-    margin-top: 20px; /* Espaciado adicional con respecto a las dos primeras cajas */
-    width: 300px; /* Más ancha para destacar la caja inferior */
+.titulo {
+    color: #FFFFFF;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: inline-block;
 }
+
 
 
 

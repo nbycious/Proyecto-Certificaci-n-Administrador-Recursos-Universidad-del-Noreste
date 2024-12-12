@@ -44,7 +44,7 @@
           <!-- Filtro de categoría -->
           <div class="col-6">
             <label for="categoryFilter" class="form-label fuentetxt">Categoría:</label>
-            <select id="categoryFilter" class="form-select fuentetxt2" [(ngModel)]="categoriaSeleccionada" (change)="aplicarFiltros()">
+            <select id="categoryFilter" class="form-select" [(ngModel)]="categoriaSeleccionada" (change)="aplicarFiltros()">
               <option value="">Todos</option>
               <option value="AULA">AULA</option>
               <option value="EQUIPO DE SOLDAR">EQUIPO DE SOLDAR</option>
@@ -66,17 +66,18 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="alert alert-info" *ngIf="solicitudActual!.recursos!.length > 0 && usuario.Rol == 'Alumno'">
+      <div class="alert alert-info" *ngIf="solicitudActual!.recursos!.length > 0 && usuario.Rol == 'Alumno'">
       
-      <div>
-        <strong>Recursos seleccionados:</strong>
-        <ul>
-          <li *ngFor="let recurso of solicitudActual!.recursos">{{recurso.nombreRecurso}}, {{recurso.cantidadSeleccionada}}</li> 
-        </ul>
-        <button class="btn btn-primary" (click)="enviarSolicitud()">Enviar Solicitud</button>
+        <div>
+          <strong>Recursos seleccionados:</strong>
+          <ul>
+            <li *ngFor="let recurso of solicitudActual!.recursos">{{recurso.nombreRecurso}}, {{recurso.cantidadSeleccionada}}</li> 
+          </ul>
+          <button class="btn btn-primary" (click)="enviarSolicitud()">Enviar Solicitud</button>
+        </div>
       </div>
     </div>
+   
 
 
 
@@ -84,11 +85,11 @@
 <!--modales-->
 <!--modal nuevo recurso-->
 <div class="modal fade" id="modalRecurso" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+<div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
   <div class="modal-content">
     <div class="modal-header">
       <h1 class="modal-title" id="exampleModalLabel">Nuevo Recurso</h1>
-      <button type="button" id="btnCerrarModalElemento" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
      
@@ -102,6 +103,7 @@
                 <input 
                   type="file" 
                   class="form-control" 
+                  id="formFile"
                   (change)="onFileSelected($event)"
                   accept="image/*">
                 
@@ -120,7 +122,7 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="Categoria">Categoría:</label>
-            <select id="Categoria" class="form-control" [(ngModel)]="nuevoRecurso.Categoria" (ngModelChange)="onTipoRecursoChange($event)" name="Categoria" required>
+            <select id="Categoria" class="form-select" [(ngModel)]="nuevoRecurso.Categoria" (ngModelChange)="onTipoRecursoChange($event)" name="Categoria" required>
               <option value="" disabled selected>Selecciona un tipo</option>
               <option value="EQUIPO DE SOLDAR">EQUIPO DE SOLDAR</option>
               <option value="EQUIPO DE SEGURIDAD">EQUIPO DE SEGURIDAD</option>
@@ -132,7 +134,7 @@
           </div>
           <div class="col-md-6">
             <label for="estadoRecurso">Estado del Recurso:</label>
-            <select id="estadoRecurso" class="form-control" [(ngModel)]="nuevoRecurso.Estado" name="estadoRecurso" required>
+            <select id="estadoRecurso" class="form-select" [(ngModel)]="nuevoRecurso.Estado" name="estadoRecurso" required>
               <option value="" disabled selected>Selecciona un estado</option>
               <option value="Activo">Activo</option>
               <option value="Inactivo">Inactivo</option>
@@ -144,7 +146,7 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="ubicacionRecurso">Ubicación:</label>
-            <select id="ubicacionRecurso" class="form-control" [(ngModel)]="nuevoRecurso.Ubicacion" name="ubicacionRecurso" required>
+            <select id="ubicacionRecurso" class="form-select" [(ngModel)]="nuevoRecurso.Ubicacion" name="ubicacionRecurso" required>
               <option value="" disabled selected>Selecciona una ubicación</option>
               <!-- Si el tipo de recurso es "Aula", muestra ubicaciones específicas de aulas -->
               <option *ngIf="esAula" value="Quinto piso, edif. principal">Quinto piso, edif. principal</option>
@@ -155,10 +157,16 @@
             </select>
           </div>
           <div class="col-md-6" *ngIf="!esAula">
-            <label for="clave">Cantidad:</label>
+            <label for="clave">Cantidad en inventario:</label>
             <input type="text" id="cantidadReal" class="form-control" [(ngModel)]="nuevoRecurso.cantidadReal" name="cantidadReal" required (keypress)="validarNumeros($event)">
           </div>
+        <div class="col-md-6" *ngIf="!esAula">
+          <label for="clave">Cantidad Disponible:</label>
+          <input type="text" id="cantidadReal" class="form-control" [(ngModel)]="nuevoRecurso.cantidadDisp" name="cantidadReal" required (keypress)="validarNumeros($event)">
         </div>
+        </div>
+       
+      
 
       
 
@@ -207,7 +215,7 @@
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="Categoria">Categoría:</label>
-              <select id="Categoria" class="form-control" [(ngModel)]="nuevoRecurso.Categoria" (ngModelChange)="onTipoRecursoChange($event)" name="Categoria" required>
+              <select id="Categoria" class="form-select" [(ngModel)]="nuevoRecurso.Categoria" (ngModelChange)="onTipoRecursoChange($event)" name="Categoria" required>
                 <option value="" disabled selected>Selecciona un tipo</option>
                 <option value="AULA">AULA</option>
                 <option value="EQUIPO DE SOLDAR">EQUIPO DE SOLDAR</option>
@@ -219,7 +227,7 @@
             </div>
             <div class="col-md-6">
               <label for="estadoRecurso">Estado del Recurso:</label>
-              <select id="estadoRecurso" class="form-control" [(ngModel)]="editRecurso.Estado" name="estadoRecurso" required #estadoRecurso="ngModel">
+              <select id="estadoRecurso" class="form-select" [(ngModel)]="editRecurso.Estado" name="estadoRecurso" required #estadoRecurso="ngModel">
                 <option value="">Seleccione un estado</option>
                 <option value="Activo">Activo</option>
                 <option value="Inactivo">Inactivo</option>
@@ -235,7 +243,7 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="ubicacionRecurso">Ubicación:</label>
-            <select id="ubicacionRecurso" class="form-control" [(ngModel)]="editRecurso.Ubicacion" name="ubicacionRecurso" required>
+            <select id="ubicacionRecurso" class="form-select" [(ngModel)]="editRecurso.Ubicacion" name="ubicacionRecurso" required>
               <option value="" disabled selected>Selecciona una ubicación</option>
               <!-- Si el tipo de recurso es "Aula", muestra ubicaciones específicas de aulas -->
               <option *ngIf="esAula" value="Quinto piso, edif. principal">Quinto piso, edif. principal</option>
@@ -247,9 +255,10 @@
           </div>
         <!-- Solo mostrar el campo Cantidad si el tipo de recurso NO es "Aula" -->
         <div class="col-md-6" *ngIf="!esAula">
-          <label for="clave">Cantidad:</label>
+          <label for="clave">Cantidad en inventario</label>
           <input type="text" id="cantidadReal" class="form-control" [(ngModel)]="editRecurso.cantidadReal" name="cantidadReal" required (keypress)="validarNumeros($event)">
         </div>
+       
         </div>
 
        
