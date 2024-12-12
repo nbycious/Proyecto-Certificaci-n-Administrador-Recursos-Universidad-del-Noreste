@@ -21,6 +21,10 @@ export class MainComponent implements OnInit {
   navegaraCatalogos(){
     this.router.navigate(['/Catalogos'])
   }
+  
+  navegaraSolicitudes(){
+    this.router.navigate(['/Solicitudes'])
+  }
  
   ngOnInit(): void {
     this.rol = localStorage.getItem('rol');

@@ -1,4 +1,7 @@
 <app-navbar *ngIf="usuario.Rol=='Alumno'"></app-navbar>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 <h1 *ngIf="usuario.Rol == 'Alumno'"class="md:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 text-center" style=" margin-top: 25px; font-size: 35px;">Solicitar un recurso</h1>
 <h1 *ngIf="usuario.Rol == 'Administrador'" class="md:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 text-center" style=" margin-top: 25px; font-size: 35px;">Solicitudes</h1>
 
@@ -10,9 +13,9 @@
                  <div class="col-6" style="margin: auto;">
                   <label for="categoryFilter" class="form-label text-center-label" style="margin-top: 10px;" *ngIf="usuario.Rol=='Alumno'">Filtrar por:</label>
                   <h5 class="text-center" *ngIf="usuario.Rol=='Administrador'">Filtrar por:</h5>
-                  <div class="d-flex align-items-center" style="gap: 10px; margin-top: 10px;" *ngIf="usuario.Rol=='Administrador'">
+                  <div class="d-flex align-items-center" style="gap: 10px; margin-top: 10px;">
                     <label for="categoryFilter" class="form-label text-center-label" style="margin: 0;">Estatus:</label>
-                    <select id="categoryFilter" class="form-control form-select-lg" [(ngModel)]="estatusSeleccionado" (change)="aplicarFiltros()" style="width: 135px;">
+                    <select id="categoryFilter" class="form-select"  [(ngModel)]="estatusSeleccionado" (change)="aplicarFiltros()" style="width: 135px;">
                       <option value="Enviada">Enviadas</option>
                       <option value="Aprobada">Aprobadas</option>
                       <option value="Finalizada">Finalizadas</option>
@@ -43,57 +46,67 @@
     <div class="container" style="margin-top: 40px;">
       <h3 *ngIf="usuario.Rol =='Alumno'" class="text-center">Mis solicitudes</h3>
       <table class="table table-bordered text-center">
-        <thead class="table-light">
-            <tr>
-               
-                <th  *ngIf="usuario.Rol =='Administrador'" scope="col">Matrícula</th> 
-                <th  *ngIf="usuario.Rol =='Administrador'" scope="col">Nombre</th>                
-                <th scope="col">Fecha de Préstamo</th>
-                <th scope="col">Fecha de Devolución</th>
-                <th scope="col">Materia</th>
-                
-               <th  scope="col">Estatus</th>
-                <th  *ngIf="usuario.Rol =='Administrador'" scope="col">Detalles</th>
-                
-              
-            </tr>
+        <thead>
+          <tr>
+            <th *ngIf="usuario.Rol == 'Administrador'">Matrícula</th>
+            <th *ngIf="usuario.Rol == 'Administrador'">Solicitante</th>
+            <th>Fecha de Inicio</th>
+            <th>Fecha de Fin</th>
+            <th>Materia</th>
+            <th *ngIf="usuario.Rol == 'Alumno'">Recursos Solicitados</th> <!-- Añadido -->
+            <th>Estado</th>
+            <th *ngIf="usuario.Rol=='Administrador'">Detalles</th>
+          </tr>
         </thead>
         <tbody>
           <tr *ngFor="let solicitud of solisFiltradas">
-              <td *ngIf="usuario.Rol =='Administrador'" >{{ solicitud.matriculaSolic }}</td>
-              <td *ngIf="usuario.Rol =='Administrador'" >{{ solicitud.nombreSolicitante }}</td>
-              <td>{{ solicitud.fechaInicio }}</td>
-              <td>{{ solicitud.fechaFin }}</td>
-              <td>{{ solicitud.materia }}</td>
-              <td>
-                <select *ngIf="usuario.Rol=='Administrador'" 
-                  class="form-control" 
-                  [(ngModel)]="solicitud.estado" 
-                  (ngModelChange)="actualizarEstado(solicitud.idSolicitud, $event)"
-                  [disabled]="solicitud.estado === 'Finalizada'" 
-                  >
-                  <option *ngFor="let estado of estadosDisponibles" [value]="estado">
-                    {{ estado }}
-                  </option>
-                </select>
-              </td>
-              
-             <td  *ngIf="usuario.Rol =='Alumno'">{{solicitud.estado}}</td>
-             
+            <td *ngIf="usuario.Rol == 'Administrador'">{{ solicitud.matriculaSolic }}</td>
+            <td *ngIf="usuario.Rol == 'Administrador'">{{ solicitud.nombreSolicitante }}</td>
+            <td>{{ solicitud.fechaInicio }}</td>
+            <td>{{ solicitud.fechaFin }}</td>
+            <td>{{ solicitud.materia }}</td>
+          
             
-              <td>
-                <button type="button" 
-                *ngIf="usuario.Rol =='Administrador'"
-                class="btn btn-outline-primary" data-bs-toggle="modal" 
-                data-bs-target="#modalDetallesSolicitud"  (click)="seleccionarSolicitud(solicitud)">Mostrar</button>
-              </td>
+            <!-- Aquí se muestran los recursos solicitados -->
+            <td *ngIf="usuario.Rol == 'Alumno'">
+              <ul>
+                <li *ngFor="let recurso of solicitud.recursos">
+                  {{ recurso.nombreRecurso }} - {{ recurso.cantidadSeleccionada }}
+                </li>
+              </ul>
+            </td>
+            <td *ngIf="usuario.Rol == 'Alumno'">{{ solicitud.estado }}</td>
+        
+            <!-- Select para actualizar estado si es administrador -->
+            <td *ngIf="usuario.Rol == 'Administrador'">
+              <select 
+                class="form-select" 
+                [(ngModel)]="solicitud.estado" 
+                (ngModelChange)="actualizarEstado(solicitud.idSolicitud, $event)"
+                [disabled]="solicitud.estado === 'Finalizada'">
+                <option *ngFor="let estado of estadosDisponibles" [value]="estado">
+                  {{ estado }}
+                </option>
+              </select>
+            </td>
+            <td *ngIf="usuario.Rol=='Administrador'">
+              <button type="button" 
+              *ngIf="usuario.Rol =='Administrador'"
+              class="btn btn-outline-primary" data-bs-toggle="modal" 
+              data-bs-target="#modalDetallesSolicitud"  (click)="seleccionarSolicitud(solicitud)">Mostrar</button>
+            </td>
           </tr>
-      </tbody>
+        </tbody>
+        
       </table>
+      <div class="alert alert-info" *ngIf="solisFiltradas.length === 0 && estatusSeleccionado !== ''">
+        No se encontraron solicitudes con el estatus '{{ estatusSeleccionado }}'.
+      </div>
       
       
     </div>
 </div>
+
 
 
 
@@ -134,7 +147,7 @@
                 <th>Recursos solicitados:</th>
                 <td>
                   <ul>
-                    <li *ngFor="let recurso of solicitudSeleccionada.recursos">{{ recurso }}</li>
+                    <li *ngFor="let recurso of solicitudSeleccionada.recursos">{{recurso.nombreRecurso}},  {{recurso.cantidadSeleccionada}} </li>
                   </ul>
                 </td>
               </tr>

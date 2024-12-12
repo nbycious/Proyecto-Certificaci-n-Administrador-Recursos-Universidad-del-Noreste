@@ -24,7 +24,11 @@ import { Recurso } from "src/app/Clases/bd";
     const recursoDoc = doc(this.firestore, `Recursos/${recursoId}`);
     return updateDoc(recursoDoc, { cantidadDisp: nuevaCantidad });
   }
-
+  // Actualizar el estatus de un recurso
+  actualizarEstatusRecurso(recursoId: string, nuevoEstatus: string): Promise<void> {
+    const recursoDoc = doc(this.firestore, `Recursos/${recursoId}`);
+    return updateDoc(recursoDoc, { estatus: nuevoEstatus });
+  }
   // Restaurar la cantidad disponible de un recurso
   restaurarCantidad(recursoId: string, cantidadReal: number): Promise<void> {
     const recursoDoc = doc(this.firestore, `Recursos/${recursoId}`);
